@@ -13,7 +13,7 @@ SECRET_KEY = "django-insecure-calendar-booking-service-dev-key"
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['ai-for-developers-project-386-uiw7.onrender.com', 'localhost', '127.0.0.1']
 
 INSTALLED_APPS = [
     "corsheaders",
