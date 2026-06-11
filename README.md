@@ -14,3 +14,5 @@ npm install
 npx playwright install chromium
 npx playwright test
 
+ссылка на webapp:
+https://ai-for-developers-project-386-uiw7.onrender.com/
