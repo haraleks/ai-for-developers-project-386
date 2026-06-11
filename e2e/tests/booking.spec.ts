@@ -62,10 +62,10 @@ test.describe('Calendar Booking Service E2E Tests', () => {
 
     // Появляется экран успешного создания
     await expect(page.getByText('Запись успешно создана!')).toBeVisible();
-    await expect(page.locator(`text=${eventName}`)).toBeVisible();
-    await expect(page.locator(`text=${guestName}`)).toBeVisible();
-    await expect(page.locator(`text=${guestEmail}`)).toBeVisible();
-    await expect(page.locator(`text=${guestComment}`)).toBeVisible();
+    await expect(page.locator(`text=${eventName}`).first()).toBeVisible();
+    await expect(page.locator(`text=${guestName}`).first()).toBeVisible();
+    await expect(page.locator(`text=${guestEmail}`).first()).toBeVisible();
+    await expect(page.locator(`text=${guestComment}`).first()).toBeVisible();
 
     // 3. Проверка у владельца в кабинете в списке записей
     await page.goto('/owner');
@@ -73,10 +73,11 @@ test.describe('Calendar Booking Service E2E Tests', () => {
     // Переключаемся на вкладку "Записи"
     await page.getByRole('tab', { name: /Записи/ }).click();
 
-    // Находим запись гостя
-    await expect(page.locator(`text=${guestName}`)).toBeVisible();
-    await expect(page.locator(`text=${guestEmail}`)).toBeVisible();
-    await expect(page.locator(`text=${guestComment}`)).toBeVisible();
+    // Находим конкретную карточку записи этого гостя во вкладке "Записи"
+    const bookingCard = page.locator('div.rounded-xl, div.border').filter({ hasText: guestName }).first();
+    await expect(bookingCard).toBeVisible();
+    await expect(bookingCard.locator(`text=${guestEmail}`)).toBeVisible();
+    await expect(bookingCard.locator(`text=${guestComment}`)).toBeVisible();
 
     // 4. Контрольная проверка бэкенда: делаем прямой API-запрос, чтобы убедиться в сохранении в БД
     const bookingsResponse = await request.get('http://localhost:8000/owner/bookings');

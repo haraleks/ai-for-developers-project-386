@@ -8,3 +8,8 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 cd frontend
 npm install
 npm run dev
+
+cd e2e
+npm install
+npx playwright install chromium
+npx playwright test
