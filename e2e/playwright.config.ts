@@ -18,7 +18,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'http://localhost:5173',
+    baseURL: 'http://127.0.0.1:5173',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
@@ -36,16 +36,19 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: [
     {
-      command: './.venv/bin/python manage.py runserver 8000',
-      port: 8000,
+      command: './.venv/bin/python manage.py runserver 127.0.0.1:8000',
+      url: 'http://127.0.0.1:8000/owner/schedule',
       cwd: '../backend',
       reuseExistingServer: !process.env.CI,
     },
     {
-      command: 'npm run dev',
-      port: 5173,
+      command: 'npm run dev -- --host 127.0.0.1',
+      url: 'http://127.0.0.1:5173/',
       cwd: '../frontend',
       reuseExistingServer: !process.env.CI,
+      env: {
+        VITE_API_BASE_URL: 'http://127.0.0.1:8000',
+      },
     },
   ],
 });

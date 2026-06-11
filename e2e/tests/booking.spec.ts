@@ -80,7 +80,7 @@ test.describe('Calendar Booking Service E2E Tests', () => {
     await expect(bookingCard.locator(`text=${guestComment}`)).toBeVisible();
 
     // 4. Контрольная проверка бэкенда: делаем прямой API-запрос, чтобы убедиться в сохранении в БД
-    const bookingsResponse = await request.get('http://localhost:8000/owner/bookings');
+    const bookingsResponse = await request.get('http://127.0.0.1:8000/owner/bookings');
     expect(bookingsResponse.ok()).toBeTruthy();
     const bookings = await bookingsResponse.json();
     
@@ -94,7 +94,7 @@ test.describe('Calendar Booking Service E2E Tests', () => {
     const eventName = getUniqueName('Тест Конфликт');
     
     // 1. Создаем тип события напрямую на бэкенде
-    const createTypeResponse = await request.post('http://localhost:8000/event-types', {
+    const createTypeResponse = await request.post('http://127.0.0.1:8000/event-types', {
       data: {
         name: eventName,
         description: 'Слот для проверки конфликта 409',
@@ -105,7 +105,7 @@ test.describe('Calendar Booking Service E2E Tests', () => {
     const eventType = await createTypeResponse.json();
 
     // 2. Получаем список слотов для этого события
-    const slotsResponse = await request.get(`http://localhost:8000/event-types/${eventType.id}/slots`);
+    const slotsResponse = await request.get(`http://127.0.0.1:8000/event-types/${eventType.id}/slots`);
     expect(slotsResponse.ok()).toBeTruthy();
     const slots = await slotsResponse.json();
     
@@ -144,7 +144,7 @@ test.describe('Calendar Booking Service E2E Tests', () => {
     await page.locator('#guest-email').fill('late@example.com');
 
     // 4. Прямо перед нажатием кнопки "Подтвердить" в UI бронируем этот же слот через API (создаем конфликт)
-    const apiBookingResponse = await request.post('http://localhost:8000/bookings', {
+    const apiBookingResponse = await request.post('http://127.0.0.1:8000/bookings', {
       data: {
         eventTypeId: eventType.id,
         startTime: targetSlot.startTime,
