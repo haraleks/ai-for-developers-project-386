@@ -3,7 +3,11 @@
   "mcp": {
     "chrome-devtools": {
       "type": "local",
-      "command": ["npx", "-y", "chrome-devtools-mcp@latest"],
+      "command": [
+        "npx",
+        "-y",
+        "chrome-devtools-mcp@latest"
+      ],
       "enabled": true
     },
     "playwright": {
@@ -12,6 +16,14 @@
         "npx",
         "@playwright/mcp@latest"
       ],
+      "enabled": true
+    },
+    "render": {
+      "url": "https://mcp.render.com/mcp",
+      "headers": {
+        "Authorization": "Bearer rnd_V7hqZ3pM8ZsTVGg3snNeKm9MYSKj"
+      },
+      "type": "remote",
       "enabled": true
     }
   }
