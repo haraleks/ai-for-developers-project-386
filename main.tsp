@@ -168,3 +168,68 @@ interface Public {
     @body body: Error;
   } | Error;
 }
+
+/**
+ * Настройки доступности дня недели для владельца.
+ */
+model ScheduleDay {
+  /** День недели (1 - понедельник, 7 - воскресенье) */
+  @minValue(1)
+  @maxValue(7)
+  dayOfWeek: int32;
+
+  /** Доступен ли этот день для встреч */
+  isWorking: boolean;
+
+  /** Время начала рабочего дня в формате "HH:MM" */
+  @pattern("^([01][0-9]|2[0-3]):[0-5][0-9]$")
+  startTime: string;
+
+  /** Время окончания рабочего дня в формате "HH:MM" */
+  @pattern("^([01][0-9]|2[0-3]):[0-5][0-9]$")
+  endTime: string;
+}
+
+/**
+ * Административный сценарий владельца:
+ * 1. Настройка типов встреч (создание, изменение, удаление).
+ * 2. Настройка доступности (рабочие дни, часы работы).
+ * 3. Просмотр списка совершенных бронирований.
+ */
+@tag("Owner")
+interface Private {
+  /** Получить текущие настройки доступности владельца */
+  @route("/owner/schedule")
+  @get
+  getSchedule(): ScheduleDay[] | Error;
+
+  /** Обновить настройки доступности владельца */
+  @route("/owner/schedule")
+  @put
+  saveSchedule(@body schedule: ScheduleDay[]): ScheduleDay[] | Error;
+
+  /** Получить список всех бронирований для владельца */
+  @route("/owner/bookings")
+  @get
+  listBookings(): Booking[] | Error;
+
+  /** Создать новый тип события */
+  @route("/event-types")
+  @post
+  createEventType(@body eventType: EventTypeCreate): {
+    @statusCode statusCode: 201;
+    @body body: EventType;
+  } | Error;
+
+  /** Изменить тип события */
+  @route("/event-types/{id}")
+  @patch
+  updateEventType(@path id: int32, @body eventType: EventTypeCreate): EventType | Error;
+
+  /** Удалить тип события */
+  @route("/event-types/{id}")
+  @delete
+  deleteEventType(@path id: int32): {
+    @statusCode statusCode: 204;
+  } | Error;
+}

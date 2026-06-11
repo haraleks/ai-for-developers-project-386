@@ -8,3 +8,5 @@ dist/
 # Dependency directories
 node_modules/
 .idea
+frontend/node_modules
+frontend/dist
